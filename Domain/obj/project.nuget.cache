@@ -1,11 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "K4kQ3IywBwlR//FdMgjozufi4zbPM0TFHUynOv3NMzNYz+5FiWjx4RbAZP9yQTXnueQ6cF9C0C699px18iwGfg==",
+  "dgSpecHash": "DeV6VSH/mEpkFT8TBNlgVCuQebm08zIMP8Ry6hzpo6aZMi/dxT2beoz9T0fzcNgCZkFSrqDRZaPWu7m/SYKbkQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Stephen\\Documents\\Github\\Reactivities\\Domain\\Domain.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\Stephen\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
-    "C:\\Users\\Stephen\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
-  ],
+  "expectedPackageFiles": [],
   "logs": []
 }
