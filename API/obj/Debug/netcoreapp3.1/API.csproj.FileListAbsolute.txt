@@ -31,7 +31,6 @@ C:\Users\Stephen\Documents\Github\Reactivities\API\bin\Debug\netcoreapp3.1\Micro
 C:\Users\Stephen\Documents\Github\Reactivities\API\bin\Debug\netcoreapp3.1\Microsoft.DotNet.PlatformAbstractions.dll
 C:\Users\Stephen\Documents\Github\Reactivities\API\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.dll
 C:\Users\Stephen\Documents\Github\Reactivities\API\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Abstractions.dll
-C:\Users\Stephen\Documents\Github\Reactivities\API\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
 C:\Users\Stephen\Documents\Github\Reactivities\API\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Relational.dll
 C:\Users\Stephen\Documents\Github\Reactivities\API\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Sqlite.dll
 C:\Users\Stephen\Documents\Github\Reactivities\API\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Caching.Abstractions.dll
@@ -63,3 +62,4 @@ C:\Users\Stephen\Documents\Github\Reactivities\API\bin\Debug\netcoreapp3.1\runti
 C:\Users\Stephen\Documents\Github\Reactivities\API\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\e_sqlite3.dll
 C:\Users\Stephen\Documents\Github\Reactivities\API\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\e_sqlite3.dll
 C:\Users\Stephen\Documents\Github\Reactivities\API\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\e_sqlite3.dll
+C:\Users\Stephen\Documents\Github\Reactivities\API\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
