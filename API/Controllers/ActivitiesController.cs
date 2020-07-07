@@ -52,5 +52,13 @@ namespace API.Controllers
             return await _mediator.Send(command);
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Unit>> Delete(Guid id) 
+        {
+            // API controller for getting a list of activities
+            // It keeps our API controller extremely dumb
+            return await _mediator.Send(new Delete.Command { Id = id });
+        }
+
     }
 }
