@@ -42,5 +42,15 @@ namespace API.Controllers
             // It keeps our API controller extremely dumb
             return await _mediator.Send(command);
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Unit>> Edit(Guid id,Edit.Command command) 
+        {
+            // API controller for getting a list of activities
+            // It keeps our API controller extremely dumb
+            command.Id = id;
+            return await _mediator.Send(command);
+        }
+
     }
 }
