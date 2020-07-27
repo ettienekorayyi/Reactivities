@@ -1,4 +1,5 @@
-bin
+bin/ 	# ignore bin directory
+*.obj 	# ignore any files with .obj postfix
 obj
 .vscode
 .DS_Store
