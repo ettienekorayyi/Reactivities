@@ -1,9 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import axios from "axios";
-import { Header, Icon, List, Container } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 
-import { cars } from "../../demo"; //
-import { CarItem } from "../../CarItem";
 import "./styles.css";
 import NavBar from "../../features/nav/NavBar";
 import { IActivity } from "../../models/activity";
@@ -36,8 +34,12 @@ const App = () => {
     setEditMode(false);
   }
 
+  const handleDeleteActivity = (id: string) => {
+    setActivities([...activities.filter(a => a.id !== id)]);
+  }
+
   useEffect(() => {
-    const response = axios
+     axios
       .get<IActivity[]>("http://localhost:5000/api/activities")
       .then((response) => {
         let activities: IActivity[] = [];
@@ -62,6 +64,7 @@ const App = () => {
           setSelectedActivity={setSelectedActivity}
           createActivity={handleCreateActivity}
           editActivity={handleEditActivity}
+          deleteActivity={handleDeleteActivity}
         />
       </Container>
     </Fragment>
