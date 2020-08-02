@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, SyntheticEvent } from "react";
 import axios from "axios";
 import { Container } from "semantic-ui-react";
 
@@ -17,6 +17,7 @@ const App = () => {
     null
   );
   const [editMode, setEditMode] = useState(false);
+  const [target, setTarget] = useState('');
 
   const handleSelectActivity = (id: string) => {
     setSelectedActivity(activities.filter((a) => a.id === id)[0]);
@@ -29,14 +30,16 @@ const App = () => {
   };
 
   const handleCreateActivity = (activity: IActivity) => {
+    setSubmitting(true);
     agent.Activities.create(activity).then(() => {
       setActivities([...activities, activity]);
       setSelectedActivity(activity);
       setEditMode(false);
-    });
+    }).then(() => setSubmitting(false));
   };
 
   const handleEditActivity = (activity: IActivity) => {
+    setSubmitting(true);
     agent.Activities.update(activity).then(() => {
       setActivities([
         ...activities.filter((a) => a.id !== activity.id),
@@ -44,13 +47,15 @@ const App = () => {
       ]);
       setSelectedActivity(activity);
       setEditMode(false);
-    });
+    }).then(() => setSubmitting(false));
   };
 
-  const handleDeleteActivity = (id: string) => {
+  const handleDeleteActivity = (event: SyntheticEvent<HTMLButtonElement>, id: string) => {
+    setSubmitting(true);
+    setTarget(event.currentTarget.name);
     agent.Activities.delete(id).then(() => {
       setActivities([...activities.filter((a) => a.id !== id)]);
-    });
+    }).then(() => setSubmitting(false));
     
   };
 
@@ -81,6 +86,8 @@ const App = () => {
           createActivity={handleCreateActivity}
           editActivity={handleEditActivity}
           deleteActivity={handleDeleteActivity}
+          submitting={submitting}
+          target={target}
         />
       </Container>
     </Fragment>
