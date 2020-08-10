@@ -3,7 +3,7 @@ import { Grid } from "semantic-ui-react";
 
 import { ActivityList } from "./ActivityList";
 import ActivityDetails from "../details/ActivityDetails";
-import { ActivityForm } from "../../activities/form/ActivityForm";
+import ActivityForm from "../../activities/form/ActivityForm";
 import ActivityStore from '../../../app/stores/activityStore';
 import { observer } from 'mobx-react-lite';
 
