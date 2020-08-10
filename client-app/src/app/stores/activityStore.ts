@@ -17,7 +17,9 @@ class ActivityStore {
                     activity.date = activity.date.split(".")[0];
                     this.activities.push(activity);
                 });
-            }).finally(() => this.loadingInitial = false);
+            })
+            .catch(error => console.log(error))
+            .finally(() => this.loadingInitial = false);
     }
 
     @action selectActivity = (id: string) => {

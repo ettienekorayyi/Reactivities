@@ -10,7 +10,7 @@ import { Container } from "semantic-ui-react";
 import "./styles.css";
 import NavBar from "../../features/nav/NavBar";
 import { IActivity } from "../../models/activity";
-import { ActivityDashboard } from "../../features/activities/dashboard/ActivityDashboard";
+import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
 import agent from "../api/agent";
 import { LoadingComponent } from "./LoadingComponent";
 import ActivityStore from "../stores/activityStore";
