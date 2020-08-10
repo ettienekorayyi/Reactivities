@@ -4,19 +4,9 @@ import { IActivity } from "../../../models/activity";
 import ActivityStore from '../../../app/stores/activityStore';
 import { observer } from 'mobx-react-lite';
 
-interface IProps {
-  deleteActivity: (event: SyntheticEvent<HTMLButtonElement>, id: string) => void;
-  submitting: boolean;
-  target: string;
-}
-
-export const ActivityList: React.FC<IProps> = ({
-  deleteActivity,
-  submitting,
-  target
-}) => {
+export const ActivityList: React.FC = () => {
   const activityStore = useContext(ActivityStore);
-  const { activitiesByDate, selectActivity } = activityStore;
+  const { activitiesByDate, selectActivity, deleteActivity, submitting, target } = activityStore;
   
   return (
     <Segment clearing>
