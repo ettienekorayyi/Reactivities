@@ -1,36 +1,45 @@
-import React, { useState, FormEvent, useContext } from "react";
+import React, { useState, FormEvent, useContext, useEffect } from "react";
 import { Form, Segment, Button } from "semantic-ui-react";
 import { IActivity } from "../../../models/activity";
 import { v4 as uuid } from "uuid";
-import ActivityStore from '../../../app/stores/activityStore';
+import ActivityStore from "../../../app/stores/activityStore";
+import { RouteComponentProps } from "react-router-dom";
+import { set } from "mobx";
 
-interface IProps { 
-  activity: IActivity | null;
+interface DetailParams {
+  id: string;
 }
 
-export const ActivityForm: React.FC<IProps> = ({
-  activity: initializeFormState
+export const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
+  match,
 }) => {
   const activityStore = useContext(ActivityStore);
-  const { createActivity, editActivity, submitting, cancelOpenForm } = activityStore;
-  
-  const initializeForm = () => {
-    if (initializeFormState) {
-      return initializeFormState;
-    } else {
-      return {
-        id: "",
-        title: "",
-        category: "",
-        description: "",
-        date: "",
-        city: "",
-        venue: "",
-      };
-    }
-  };
+  const {
+    createActivity,
+    editActivity,
+    submitting,
+    cancelOpenForm,
+    activity: initializeFormState,
+    loadActivity,
+  } = activityStore;
 
-  const [activity, setActivity] = useState<IActivity>(initializeForm);
+  useEffect(() => {
+    if (match.params.id) {
+      loadActivity(match.params.id).then(
+        () => initializeFormState && setActivity(initializeFormState)
+      );
+    }
+  });
+
+  const [activity, setActivity] = useState<IActivity>({
+    id: "",
+    title: "",
+    category: "",
+    description: "",
+    date: "",
+    city: "",
+    venue: "",
+  });
 
   const handleInputChange = (
     event: FormEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -77,7 +86,7 @@ export const ActivityForm: React.FC<IProps> = ({
           onChange={handleInputChange}
           placeholder="Date"
           name="date"
-          type='datetime-local'
+          type="datetime-local"
           value={activity.date}
         />
         <Form.Input
@@ -92,7 +101,13 @@ export const ActivityForm: React.FC<IProps> = ({
           name="venue"
           value={activity.venue}
         />
-        <Button loading={submitting} floated="right" positive type="submit" content="Submit" />
+        <Button
+          loading={submitting}
+          floated="right"
+          positive
+          type="submit"
+          content="Submit"
+        />
         <Button
           onClick={() => cancelOpenForm}
           floated="right"
