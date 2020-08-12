@@ -13,6 +13,10 @@ import ActivityStore from "../stores/activityStore";
 import 'mobx-react-lite/batchingForReactDom';
 import { observer } from "mobx-react-lite";
 
+import { HomePage } from "../../features/home/HomePage";
+import { ActivityForm } from "../../features/activities/form/ActivityForm";
+import { Route } from "react-router-dom";
+
 const App = () => {
   const activityStore = useContext(ActivityStore);
 
@@ -26,7 +30,9 @@ const App = () => {
     <Fragment>
       <NavBar />
       <Container style={{ marginTop: "7em" }}>
-        <ActivityDashboard />
+        <Route exact path='/' component={HomePage} />
+        <Route path='/activities' component={ActivityDashboard} />
+        <Route path='/createActivity' component={ActivityForm} />
       </Container>
     </Fragment>
   );
