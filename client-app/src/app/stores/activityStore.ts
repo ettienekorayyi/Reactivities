@@ -35,17 +35,17 @@ class ActivityStore {
 
     @action loadActivity = async (id: string) => {
         let activity = this.getActivity(id);
-        if(activity) {
+        if (activity) {
             this.activity = activity;
         } else {
             this.loadingInitial = true;
             try {
                 activity = await agent.Activities.details(id);
-                runInAction('getting activity',() => {
+                runInAction('getting activity', () => {
                     this.activity = activity;
                     this.loadingInitial = false;
                 });
-            } catch(error) {
+            } catch (error) {
                 runInAction('get activity error', () => {
                     this.loadingInitial = false;
                 });
@@ -93,12 +93,12 @@ class ActivityStore {
             this.activityRegistry.delete(id);
             this.submitting = false;
             this.target = '';
-        } catch(error) {
+        } catch (error) {
             this.submitting = false;
             this.target = '';
             console.log(error);
         }
-        
+
     }
 
     @action openCreateForm = () => {
@@ -114,7 +114,7 @@ class ActivityStore {
     @action cancelSelectActivity = () => {
         this.activity = undefined;
     }
-    
+
     @action cancelOpenForm = (id: string) => {
         this.editMode = false;
     }
