@@ -4,7 +4,7 @@ import { IActivity } from "../../../models/activity";
 import { v4 as uuid } from "uuid";
 import ActivityStore from "../../../app/stores/activityStore";
 import { RouteComponentProps } from "react-router-dom";
-import { set } from "mobx";
+import { runInAction } from "mobx";
 
 interface DetailParams {
   id: string;
@@ -21,6 +21,7 @@ export const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
     cancelOpenForm,
     activity: initializeFormState,
     loadActivity,
+    clearActivity
   } = activityStore;
 
   useEffect(() => {
@@ -29,7 +30,11 @@ export const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
         () => initializeFormState && setActivity(initializeFormState)
       );
     }
-  });
+
+    return () => {
+      clearActivity();
+    }
+  }, [clearActivity, loadActivity, match.params.id, initializeFormState]);
 
   const [activity, setActivity] = useState<IActivity>({
     id: "",
