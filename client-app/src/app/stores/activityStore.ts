@@ -5,11 +5,9 @@ import agent from '../api/agent';
 
 class ActivityStore {
     @observable activityRegistry = new Map();
-    @observable activities: IActivity[] = [];
     @observable loadingInitial = false;
     @observable activity: IActivity | null = null;
     @observable target = '';
-    @observable editMode = false;
     @observable submitting = false;
 
     @computed get activitiesByDate() {
@@ -67,7 +65,6 @@ class ActivityStore {
         try {
             await agent.Activities.create(activity);
             this.activityRegistry.set(activity.id, activity);
-            this.editMode = false;
             this.submitting = false;
         } catch (error) {
             this.submitting = false;
@@ -81,7 +78,6 @@ class ActivityStore {
             await agent.Activities.update(activity);
             this.activityRegistry.set(activity.id, activity);
             this.activity = activity;
-            this.editMode = false;
             this.submitting = false;
         } catch (error) {
             this.submitting = false;
@@ -102,30 +98,6 @@ class ActivityStore {
             this.target = '';
             console.log(error);
         }
-
-    }
-
-    @action openCreateForm = () => {
-        this.editMode = true;
-        this.activity = null;
-    }
-
-    @action openEditForm = (id: string) => {
-        this.editMode = true;
-        this.activity = this.activityRegistry.get(id);
-    }
-
-    @action cancelSelectActivity = () => {
-        this.activity = null;
-    }
-
-    @action cancelOpenForm = (id: string) => {
-        this.editMode = false;
-    }
-
-    @action selectActivity = (id: string) => {
-        this.activity = this.activityRegistry.get(id);
-        this.editMode = false;
     }
 }
 
