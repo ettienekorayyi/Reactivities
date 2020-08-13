@@ -4,7 +4,6 @@ import { IActivity } from "../../../models/activity";
 import { v4 as uuid } from "uuid";
 import ActivityStore from "../../../app/stores/activityStore";
 import { RouteComponentProps } from "react-router-dom";
-import { runInAction } from "mobx";
 
 interface DetailParams {
   id: string;

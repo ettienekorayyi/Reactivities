@@ -1,8 +1,4 @@
-import React, {
-  useEffect,
-  Fragment,
-  useContext,
-} from "react";
+import React, { useEffect, Fragment, useContext } from "react";
 import { Container } from "semantic-ui-react";
 
 import "./styles.css";
@@ -10,7 +6,7 @@ import NavBar from "../../features/nav/NavBar";
 import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
 import { LoadingComponent } from "./LoadingComponent";
 import ActivityStore from "../stores/activityStore";
-import 'mobx-react-lite/batchingForReactDom';
+import "mobx-react-lite/batchingForReactDom";
 import { observer } from "mobx-react-lite";
 
 import { HomePage } from "../../features/home/HomePage";
@@ -25,17 +21,29 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
     activityStore.loadActivities();
   }, [activityStore]);
 
-  if (activityStore.loadingInitial) return <LoadingComponent content="Loading Activities..." />;
+  if (activityStore.loadingInitial)
+    return <LoadingComponent content="Loading Activities..." />;
 
   return (
     <Fragment>
-      <NavBar />
-      <Container style={{ marginTop: "7em" }}>
-        <Route exact path='/' component={HomePage} />
-        <Route exact path='/activities' component={ActivityDashboard} />
-        <Route path='/activities/:id' component={ActivityDetails} />
-        <Route key={location.key} path={['/createActivity', '/manage/:id']} component={ActivityForm} />
-      </Container>
+      <Route exact path="/" component={HomePage} />
+      <Route
+        path={"/(.+)"}
+        render={() => (
+          <Fragment>
+            <NavBar />
+            <Container style={{ marginTop: "7em" }}>
+              <Route exact path="/activities" component={ActivityDashboard} />
+              <Route path="/activities/:id" component={ActivityDetails} />
+              <Route
+                key={location.key}
+                path={["/createActivity", "/manage/:id"]}
+                component={ActivityForm}
+              />
+            </Container>
+          </Fragment>
+        )}
+      />
     </Fragment>
   );
 };
