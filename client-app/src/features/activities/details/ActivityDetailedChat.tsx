@@ -1,8 +1,7 @@
 import React, { Fragment } from 'react'
-import { IActivity } from '../../../models/activity'
 import { Segment, Header, Form, Button, Comment } from 'semantic-ui-react'
 
-const ActivityDetailedChat  = () => {
+const ActivityDetailedChat = () => {
 
     return (
             <Fragment>
