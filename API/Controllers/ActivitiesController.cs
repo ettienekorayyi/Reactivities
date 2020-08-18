@@ -40,6 +40,9 @@ namespace API.Controllers
         {
             // API controller for getting a list of activities
             // It keeps our API controller extremely dumb
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             return await _mediator.Send(command);
         }
 
