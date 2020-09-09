@@ -1,9 +1,9 @@
-bin/ 	# ignore bin directory
-*.obj 	# ignore any files with .obj postfix
-obj
+# Ignore all bin directories
+bin/
+
+#ignore all obj directories
+obj/
+
+#ignore all .vscode directory
 .vscode
-.DS_Store
-appsettings.json
-*.db
-*API/
-*Application/
+
