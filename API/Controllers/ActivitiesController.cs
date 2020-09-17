@@ -8,23 +8,15 @@ using Domain;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ActivitiesController : ControllerBase
+    public class ActivitiesController : BaseController
     {
-        private readonly IMediator _mediator;
-
-        public ActivitiesController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
 
         [HttpGet]
         public async Task<ActionResult<List<Activity>>> List() 
         {
             // API controller for getting a list of activities
             // It keeps our API controller extremely dumb
-            return await _mediator.Send(new List.Query());
+            return await Mediator.Send(new List.Query());
         }
 
         [HttpGet("{id}")]
@@ -32,7 +24,7 @@ namespace API.Controllers
         {
             // API controller for getting a list of activities
             // It keeps our API controller extremely dumb
-            return await _mediator.Send(new Details.Query { Id = id });
+            return await Mediator.Send(new Details.Query { Id = id });
         }
 
         [HttpPost]
@@ -43,7 +35,7 @@ namespace API.Controllers
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return await _mediator.Send(command);
+            return await Mediator.Send(command);
         }
 
         [HttpPut("{id}")]
@@ -52,7 +44,7 @@ namespace API.Controllers
             // API controller for getting a list of activities
             // It keeps our API controller extremely dumb
             command.Id = id;
-            return await _mediator.Send(command);
+            return await Mediator.Send(command);
         }
 
         [HttpDelete("{id}")]
@@ -60,7 +52,7 @@ namespace API.Controllers
         {
             // API controller for getting a list of activities
             // It keeps our API controller extremely dumb
-            return await _mediator.Send(new Delete.Command { Id = id });
+            return await Mediator.Send(new Delete.Command { Id = id });
         }
 
     }
