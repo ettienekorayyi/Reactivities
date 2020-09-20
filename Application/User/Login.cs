@@ -11,6 +11,7 @@ using FluentValidation;
 using Application.Activities;
 using Microsoft.AspNetCore.Identity;
 using Application.Errors;
+using Application.Interface;
 
 namespace Application.User
 {
@@ -35,11 +36,13 @@ namespace Application.User
         {
             private readonly UserManager<AppUser> _userManager;
             private readonly SignInManager<AppUser> _signInManager;
+            private readonly IJwtGenerator _jwtGenerator;
 
             private ILogger<List> _logger { get; }
             public Handler(UserManager<AppUser> userManager,
-                SignInManager<AppUser> signInManager)
+                SignInManager<AppUser> signInManager, IJwtGenerator jwtGenerator)
             {
+                _jwtGenerator = jwtGenerator;
                 _userManager = userManager;
                 _signInManager = signInManager;
             }
@@ -52,14 +55,15 @@ namespace Application.User
                     throw new RestException(HttpStatusCode.Unauthorized);
 
                 var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
-                
-                if(result.Succeeded)
+
+                if (result.Succeeded)
                 {
                     // TODO: generate token
-                    return new User {
+                    return new User
+                    {
                         DisplayName = user.DisplayName,
-                        Token = "This will be a token",
-                        UserName = user.UserName,
+                        Token = _jwtGenerator.CreateToken(user),
+                        Username = user.UserName,
                         Image = null
                     };
                 }
