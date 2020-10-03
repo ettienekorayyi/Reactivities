@@ -1,9 +1,10 @@
 import { history } from './../../index';
 import { observable, action, computed, runInAction } from 'mobx';
-import { createContext, SyntheticEvent } from 'react';
+import { SyntheticEvent } from 'react';
 import { IActivity } from './../../models/activity';
 import agent from '../api/agent';
 import { toast } from 'react-toastify';
+import { RootStore } from './rootStore';
 
 class ActivityStore {
     @observable activityRegistry = new Map();
@@ -14,6 +15,12 @@ class ActivityStore {
 
     @computed get activitiesByDate() {
         return this.groupActivitiesByDate(Array.from(this.activityRegistry.values()));
+    }
+
+    rootStore: RootStore;
+
+    constructor(rootStore: RootStore) {
+        this.rootStore = rootStore;
     }
 
     groupActivitiesByDate(activities: IActivity[]) {
@@ -31,11 +38,13 @@ class ActivityStore {
         this.loadingInitial = true;
         try {
             const activities = await agent.Activities.list();
-            activities.forEach((activity) => {
-                activity.date = new Date(activity.date);
-                this.activityRegistry.set(activity.id, activity);
+            runInAction('loading activities', () => {
+                activities.forEach((activity) => {
+                    activity.date = new Date(activity.date);
+                    this.activityRegistry.set(activity.id, activity);
+                });
+                this.loadingInitial = false;
             });
-            this.loadingInitial = false;
         } catch (error) {
             console.log(error);
             this.loadingInitial = false;
@@ -123,4 +132,5 @@ class ActivityStore {
     }
 }
 
-export default createContext(new ActivityStore());
+export default ActivityStore;
+//export default createContext(new ActivityStore());
