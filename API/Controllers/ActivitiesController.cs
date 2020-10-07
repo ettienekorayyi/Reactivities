@@ -22,7 +22,7 @@ namespace API.Controllers
 
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<ActionResult<Activity>> Details(Guid id) 
+        public async Task<ActionResult<ActivityDto>> Details(Guid id) 
         {
             // API controller for getting a list of activities
             // It keeps our API controller extremely dumb
