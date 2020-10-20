@@ -18,15 +18,15 @@ namespace Infrastructure.Photos
                 config.Value.CloudName,
                 config.Value.ApiKey,
                 config.Value.ApiSecret
-            ); 
+            );
             _cloudinary = new Cloudinary(acc);
         }
         public PhotoUploadResult AddPhoto(IFormFile file)
         {
             var uploadResult = new ImageUploadResult();
-            if(file.Length > 0)
+            if (file.Length > 0)
             {
-                using(var stream = file.OpenReadStream()) 
+                using (var stream = file.OpenReadStream())
                 {
                     var uploadParams = new ImageUploadParams()
                     {
@@ -34,14 +34,12 @@ namespace Infrastructure.Photos
                     };
                     uploadResult = _cloudinary.Upload(uploadParams);
                 }
-                return new PhotoUploadResult()
-                {
-                    PublicId =  uploadResult.PublicId,
-                    Url = uploadResult.SecureUrl.AbsoluteUri // SecureUri
-                };
             }
-
-            throw new System.NotImplementedException();
+            return new PhotoUploadResult()
+            {
+                PublicId = uploadResult.PublicId,
+                Url = uploadResult.SecureUrl.AbsoluteUri // SecureUri
+            };
         }
 
         public string DeletePhoto(string publicId)
