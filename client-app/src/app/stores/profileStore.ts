@@ -14,6 +14,7 @@ export default class ProfileStore {
     @observable profile: IProfile | null = null;
     @observable loadingProfile = true;
     @observable uploadingPhoto = false;
+    @observable loadingUpdate = false;
     @observable loading = false;
 
     @computed get isCurrentUser() {
@@ -25,8 +26,6 @@ export default class ProfileStore {
     }
 
     @action loadProfile = async (username: string) => {
-        console.log('loadProfile');
-        console.log(this.profile);
         this.loadingProfile = true;
         try {
             const profile = await agent.Profiles.get(username);
@@ -41,15 +40,35 @@ export default class ProfileStore {
             console.log(error);
         }
     }
+    // Put request remaining
+    @action updateProfile = async (displayName: string, bio: string) => {
+        this.loadingProfile = true;
+        try {
+            await agent.Profiles.update(displayName, bio);
+            runInAction(() => {
+                this.rootStore.userStore.user!.displayName = displayName;
+                this.profile!.displayName = displayName;
+
+                this.profile!.bio = bio;
+                this.loadingProfile = false;
+            });
+        } catch (error) {
+            runInAction(() => {
+                this.loadingProfile = false;
+            });
+            console.log(error);
+        }
+
+    }
 
     @action uploadPhoto = async (file: Blob) => {
         this.uploadingPhoto = true;
         try {
             const photo = await agent.Profiles.uploadPhoto(file);
             runInAction(() => {
-                if(this.profile) {
+                if (this.profile) {
                     this.profile.photos.push(photo);
-                    if(photo.isMain && this.rootStore.userStore.user) {
+                    if (photo.isMain && this.rootStore.userStore.user) {
                         this.rootStore.userStore.user.image = photo.url;
                     }
                 }
@@ -75,7 +94,7 @@ export default class ProfileStore {
                 this.profile!.image = photo.url;
                 this.loading = false;
             });
-        } catch(error) {
+        } catch (error) {
             toast.error('Problem setting photo as main');
             runInAction(() => {
                 this.loading = false;
@@ -88,10 +107,10 @@ export default class ProfileStore {
         try {
             await agent.Profiles.deletePhoto(photo.id);
             runInAction(() => {
-               this.profile!.photos = this.profile!.photos.filter(a => a.id !== photo.id);
-               this.loading = false;
+                this.profile!.photos = this.profile!.photos.filter(a => a.id !== photo.id);
+                this.loading = false;
             });
-        } catch(error) {
+        } catch (error) {
             toast.error('Problem setting photo as main');
             runInAction(() => {
                 this.loading = false;

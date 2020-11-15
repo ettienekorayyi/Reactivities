@@ -17,7 +17,6 @@ interface IProps {
 }
 
 const ProfileHeader: React.FC<IProps> = ({ profile }) => {
-  
   return (
     <Segment>
       <Grid>
