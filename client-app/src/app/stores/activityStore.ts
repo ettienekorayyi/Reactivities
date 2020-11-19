@@ -6,6 +6,7 @@ import agent from '../api/agent';
 import { toast } from 'react-toastify';
 import { RootStore } from './rootStore';
 import { createAttendee, setActivityProps } from '../common/util/util';
+import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
 class ActivityStore {
     @observable activityRegistry = new Map();
@@ -14,6 +15,39 @@ class ActivityStore {
     @observable target = '';
     @observable submitting = false;
     @observable loading = false;
+    @observable.ref hubConnection: HubConnection | null = null;
+
+    @action createHubConnection = () => {
+        this.hubConnection = new HubConnectionBuilder()
+            .withUrl('http://localhost:5000/chat/', {
+                accessTokenFactory: () => this.rootStore.commonStore.token!})
+            .configureLogging(LogLevel.Information)
+            .build();
+
+        this.hubConnection
+            .start()
+            .then(() => console.log(this.hubConnection!.state))
+            .catch(error => console.log('Error establishing connection', error))
+
+        this.hubConnection.on('ReceiveComment', comment => {
+            runInAction(() => {
+                this.activity!.comments.push(comment);
+            });
+        });
+    };
+
+    @action stopHubConnection = () => {
+        this.hubConnection!.stop();
+    }
+
+    @action addComment = async (values: any) => {
+        values.activityId = this.activity!.id;
+        try {
+            await this.hubConnection!.invoke('SendComment', values);
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     @computed get activitiesByDate() {
         return this.groupActivitiesByDate(Array.from(this.activityRegistry.values()));
@@ -29,6 +63,7 @@ class ActivityStore {
         const sortedActivities = activities.sort(
             (a, b) => a.date.getTime() - b.date.getTime()
         );
+        console.log(sortedActivities);
         return Object.entries(sortedActivities.reduce((activities, activity) => {
             const date = activity.date.toISOString().split('T')[0];
             activities[date] = activities[date] ? [...activities[date], activity] : [activity];
@@ -41,6 +76,7 @@ class ActivityStore {
 
         try {
             const activities = await agent.Activities.list();
+            
             runInAction('loading activities', () => {
                 activities.forEach((activity) => {
                     setActivityProps(activity, this.rootStore.userStore.user!);
@@ -52,7 +88,7 @@ class ActivityStore {
             runInAction('loading activity error', () => {
                 this.loadingInitial = false;
             });
-            console.log(error);
+            //console.log(error);
         }
     }
 
@@ -185,7 +221,7 @@ class ActivityStore {
             });
             toast.error('Problem cancelling attendance.');
         }
-        
+
     }
 }
 
