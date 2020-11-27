@@ -16,6 +16,7 @@ export default class ProfileStore {
     @observable uploadingPhoto = false;
     @observable loadingUpdate = false;
     @observable loading = false;
+    @observable followings: IProfile[] = [];
 
     @computed get isCurrentUser() {
         if (this.rootStore.userStore.user && this.profile) {
@@ -58,7 +59,58 @@ export default class ProfileStore {
             });
             console.log(error);
         }
+    }
 
+    @action follow = async (username: string) => {
+        this.loading = true;
+        try {
+            console.log(username)
+            await agent.Profiles.follow(username); // username is undefined
+            runInAction(() => {
+                this.profile!.following = true;
+                this.profile!.followersCount++;
+                this.loading = false;
+            });
+        } catch (error) {
+            toast.error('Problem following user');
+            runInAction(() => {
+                this.loading = false;
+            });
+        }
+    }
+
+    @action unfollow = async (username: string) => {
+        this.loading = true;
+        try {
+            await agent.Profiles.unfollow(username); // username is undefined
+            runInAction(() => {
+                this.profile!.following = false;
+                this.profile!.followersCount--;
+                this.loading = false;
+            });
+        } catch (error) {
+            toast.error('Problem unfollowing user');
+            runInAction(() => {
+                this.loading = false;
+            });
+        }
+    }
+
+    @action loadFollowings = async (predicate: string) => {
+        this.loading = true;
+        console.log(`username: ${this.profile!.username}`);
+        try {
+            const profiles = await agent.Profiles.listFollowings(this.profile!.username, predicate);
+            runInAction(() => {
+                this.followings = profiles;
+                this.loading = false;
+            });
+        } catch (error) {
+            toast.error('Problem loading followings');
+            runInAction(() => {
+                this.loading = false;
+            });
+        }
     }
 
     @action uploadPhoto = async (file: Blob) => {

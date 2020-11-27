@@ -19,7 +19,7 @@ class ActivityStore {
 
     @action createHubConnection = (activityId: string) => {
         this.hubConnection = new HubConnectionBuilder()
-            .withUrl('http://localhost:5000/chat/', {
+            .withUrl('http://localhost:5000/chat', {
                 accessTokenFactory: () => this.rootStore.commonStore.token!})
             .configureLogging(LogLevel.Information)
             .build();
@@ -33,7 +33,7 @@ class ActivityStore {
             })
             .catch(error => console.log('Error establishing connection', error))
 
-        this.hubConnection.on('ReceiveComment', (comment) => {
+        this.hubConnection.on('ReceiveComment', comment => {
             
             runInAction(() => {
                 this.activity!.comments.push(comment);
