@@ -29,7 +29,10 @@ export default class ProfileStore {
     @action loadProfile = async (username: string) => {
         this.loadingProfile = true;
         try {
+            
             const profile = await agent.Profiles.get(username);
+            //const profiless = await agent.Profiles.getz(username);
+            console.log(profile!.userName);
             runInAction(() => {
                 this.profile = profile;
                 this.loadingProfile = false;
@@ -82,7 +85,7 @@ export default class ProfileStore {
     @action unfollow = async (username: string) => {
         this.loading = true;
         try {
-            await agent.Profiles.unfollow(username); // username is undefined
+            await agent.Profiles.unfollow(username);
             runInAction(() => {
                 this.profile!.following = false;
                 this.profile!.followersCount--;
@@ -98,9 +101,9 @@ export default class ProfileStore {
 
     @action loadFollowings = async (predicate: string) => {
         this.loading = true;
-        console.log(`username: ${this.profile!.username}`);
         try {
-            const profiles = await agent.Profiles.listFollowings(this.profile!.username, predicate);
+            const profiles = await agent.Profiles.listFollowings(this.profile!.userName, predicate);
+            console.log(`load followings: ${this.profile!.userName}`);
             runInAction(() => {
                 this.followings = profiles;
                 this.loading = false;

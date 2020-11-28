@@ -31,12 +31,12 @@ namespace Application.Profiles
             var profile = new Profile
             {
                 DisplayName = user.DisplayName,
-                    UserName = user.UserName,
-                    Image = user.Photos.FirstOrDefault(p => p.IsMain)?.Url,
-                    Photos = user.Photos,
-                    Bio = user.Bio,
-                    FollowersCount = user.Followers.Count(),
-                    FollowingsCount = user.Followings.Count()
+                UserName = user.UserName,
+                Image = user.Photos.FirstOrDefault(p => p.IsMain)?.Url,
+                Photos = user.Photos,
+                Bio = user.Bio,
+                FollowersCount = user.Followers.Count(),
+                FollowingsCount = user.Followings.Count()
             };
 
             if(currentUser.Followings.Any(x => x.TargetId == user.Id)) 
