@@ -30,6 +30,9 @@ const ProfilePage: React.FC<IProps> = ({ match }) => {
   }, [loadProfile, match]);
 
   if (loadingProfile) return <LoadingComponent content="Loading profile..." />;
+  
+  console.log(`username: ${profile!.userName}`)
+  //console.log(`displayName: ${profile!.displayName}`)
 
   return (
     <Grid>

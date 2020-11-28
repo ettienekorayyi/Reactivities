@@ -37,7 +37,7 @@ const ProfileHeader: React.FC<IProps> = ({
               <Item.Image
                 avatar
                 size="small"
-                src={profile.image || "/assets/user.png"}
+                src={profile.image! || "/assets/user.png"}
               />
               <Item.Content verticalAlign="middle">
                 <Header as="h1">{profile.displayName}</Header>
@@ -69,8 +69,8 @@ const ProfileHeader: React.FC<IProps> = ({
                   content={profile.following ? "Unfollow" : "Follow"}
                   onClick={
                     profile.following
-                      ? () => unfollow(profile.username)
-                      : () => follow(profile.username)
+                      ? () => unfollow(profile.userName)
+                      : () => follow(profile.userName)
                   }
                 />
               </Reveal.Content>
