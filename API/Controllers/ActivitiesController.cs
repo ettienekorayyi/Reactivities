@@ -13,11 +13,11 @@ namespace API.Controllers
     {
 
         [HttpGet]
-        public async Task<ActionResult<List<ActivityDto>>> List() 
+        public async Task<ActionResult<List.ActivitiesEnvelope>> List(int? limit, int? offset) 
         {
             // API controller for getting a list of activities
             // It keeps our API controller extremely dumb
-            return await Mediator.Send(new List.Query());
+            return await Mediator.Send(new List.Query(limit, offset));
         }
 
         [HttpGet("{id}")]
