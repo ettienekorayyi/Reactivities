@@ -1,5 +1,5 @@
 import { IPhoto, IProfile } from './../../models/profile';
-import { action, observable, runInAction, computed } from 'mobx';
+import { action, observable, runInAction, computed, reaction } from 'mobx';
 import { RootStore } from './rootStore';
 import agent from '../api/agent';
 import { toast } from 'react-toastify';
@@ -9,6 +9,18 @@ export default class ProfileStore {
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
+
+        reaction(
+            () => this.activeTab,
+            activeTab => {
+                if (activeTab === 4 || activeTab === 5) {
+                    const predicate = activeTab === 4 ? 'followers': 'following';
+                    this.loadFollowings(predicate);
+                } else {
+                    this.followings = [];
+                }
+            }
+        );
     }
 
     @observable profile: IProfile | null = null;
@@ -17,6 +29,7 @@ export default class ProfileStore {
     @observable loadingUpdate = false;
     @observable loading = false;
     @observable followings: IProfile[] = [];
+    @observable activeTab: number = 0;
 
     @computed get isCurrentUser() {
         if (this.rootStore.userStore.user && this.profile) {
@@ -26,13 +39,16 @@ export default class ProfileStore {
         }
     }
 
+    @action setActiveTab = (activeIndex: number) => {
+        this.activeTab = activeIndex;
+    }
+
     @action loadProfile = async (username: string) => {
         this.loadingProfile = true;
         try {
             
             const profile = await agent.Profiles.get(username);
-            //const profiless = await agent.Profiles.getz(username);
-            console.log(profile!.userName);
+            
             runInAction(() => {
                 this.profile = profile;
                 this.loadingProfile = false;
@@ -44,7 +60,7 @@ export default class ProfileStore {
             console.log(error);
         }
     }
-    // Put request remaining
+    
     @action updateProfile = async (displayName: string, bio: string) => {
         this.loadingProfile = true;
         try {
@@ -103,7 +119,6 @@ export default class ProfileStore {
         this.loading = true;
         try {
             const profiles = await agent.Profiles.listFollowings(this.profile!.userName, predicate);
-            console.log(`load followings: ${this.profile!.userName}`);
             runInAction(() => {
                 this.followings = profiles;
                 this.loading = false;

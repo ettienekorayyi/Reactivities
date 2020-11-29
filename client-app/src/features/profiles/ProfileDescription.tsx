@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Grid, GridColumn, Tab, Header, Button } from "semantic-ui-react";
+import { Grid, GridColumn, Header, Button } from "semantic-ui-react";
 import { RootStoreContext } from "../../app/stores/rootStore";
 import ProfileEditForm from "./ProfileEditForm";
 
