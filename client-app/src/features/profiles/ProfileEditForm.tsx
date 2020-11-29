@@ -11,7 +11,7 @@ import { RootStoreContext } from "../../app/stores/rootStore";
 
 const ProfileEditForm = () => {
   const rootStore = useContext(RootStoreContext);
-  const { profile, updateProfile, isCurrentUser } = rootStore.profileStore;
+  const { profile, updateProfile } = rootStore.profileStore;
   const [userBio, setUserBio] = useState<string>('');
   const [displayName, setDisplayName] = useState<string>('');
 

@@ -23,6 +23,7 @@ const ProfilePage: React.FC<IProps> = ({ match }) => {
     unfollow,
     isCurrentUser,
     loading,
+    setActiveTab
   } = rootStore.profileStore;
 
   useEffect(() => {
@@ -31,9 +32,6 @@ const ProfilePage: React.FC<IProps> = ({ match }) => {
 
   if (loadingProfile) return <LoadingComponent content="Loading profile..." />;
   
-  console.log(`username: ${profile!.userName}`)
-  //console.log(`displayName: ${profile!.displayName}`)
-
   return (
     <Grid>
       <GridColumn width={16}>
@@ -44,7 +42,7 @@ const ProfilePage: React.FC<IProps> = ({ match }) => {
           follow={follow}
           unfollow={unfollow}
         />
-        <ProfileContent />
+        <ProfileContent setActiveTab={setActiveTab} />
       </GridColumn>
     </Grid>
   );
