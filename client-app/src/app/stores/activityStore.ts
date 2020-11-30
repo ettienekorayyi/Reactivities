@@ -21,7 +21,7 @@ class ActivityStore {
     @observable activityCount = 0;
     @observable page = 0;
 
-    @computed getTotalPages() {
+    @computed get totalPages() {
         return Math.ceil(this.activityCount / LIMIT);
     }
 
