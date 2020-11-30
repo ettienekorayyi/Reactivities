@@ -1,22 +1,28 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Grid } from "semantic-ui-react";
+import { Button, Grid, Loader } from "semantic-ui-react";
 
 import { ActivityList } from "./ActivityList";
-import { observer } from 'mobx-react-lite';
+import { observer } from "mobx-react-lite";
 import { LoadingComponent } from "../../../app/layout/LoadingComponent";
 import { RootStoreContext } from "../../../app/stores/rootStore";
-
+import InfiniteScroll from "react-infinite-scroller";
 
 const ActivityDashboard: React.FC = () => {
   const rootStore = useContext(RootStoreContext);
-  const { loadActivities, loadingInitial, setPage, page, totalPages } = rootStore.activityStore;
+  const {
+    loadActivities,
+    loadingInitial,
+    setPage,
+    page,
+    totalPages,
+  } = rootStore.activityStore;
   const [loadingNext, setLoadingNext] = useState(false);
-  
+
   const handleGetNext = () => {
     setLoadingNext(true);
     setPage(page + 1);
     loadActivities().then(() => setLoadingNext(false));
-  }
+  };
 
   useEffect(() => {
     loadActivities();
@@ -28,18 +34,20 @@ const ActivityDashboard: React.FC = () => {
   return (
     <Grid>
       <Grid.Column width={10}>
-        <ActivityList />
-        <Button 
-          floated='right'
-          content='More...'
-          positive
-          disabled={totalPages === page + 1}
-          onClick={handleGetNext}
-          loading={loadingNext}
-        />
+        <InfiniteScroll
+          pageStart={0}
+          loadMore={handleGetNext}
+          hasMore={!loadingNext && page + 1 < totalPages}
+          initialLoad={false}>
+          <ActivityList />
+        </InfiniteScroll>
+        
       </Grid.Column>
       <Grid.Column width={6}>
         <h2>Activity Filters</h2>
+      </Grid.Column>
+      <Grid.Column width={10}>
+        <Loader active={loadingNext} />
       </Grid.Column>
     </Grid>
   );
