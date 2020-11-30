@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from "react";
-import { Grid } from "semantic-ui-react";
+import React, { useContext, useEffect, useState } from "react";
+import { Button, Grid } from "semantic-ui-react";
 
 import { ActivityList } from "./ActivityList";
 import { observer } from 'mobx-react-lite';
@@ -9,19 +9,34 @@ import { RootStoreContext } from "../../../app/stores/rootStore";
 
 const ActivityDashboard: React.FC = () => {
   const rootStore = useContext(RootStoreContext);
-  const { loadActivities, loadingInitial } = rootStore.activityStore;
+  const { loadActivities, loadingInitial, setPage, page, totalPages } = rootStore.activityStore;
+  const [loadingNext, setLoadingNext] = useState(false);
+  
+  const handleGetNext = () => {
+    setLoadingNext(true);
+    setPage(page + 1);
+    loadActivities().then(() => setLoadingNext(false));
+  }
 
   useEffect(() => {
     loadActivities();
   }, [loadActivities]);
 
-  if (loadingInitial)
+  if (loadingInitial && page === 0)
     return <LoadingComponent content="Loading Activities..." />;
 
   return (
     <Grid>
       <Grid.Column width={10}>
         <ActivityList />
+        <Button 
+          floated='right'
+          content='More...'
+          positive
+          disabled={totalPages === page + 1}
+          onClick={handleGetNext}
+          loading={loadingNext}
+        />
       </Grid.Column>
       <Grid.Column width={6}>
         <h2>Activity Filters</h2>
