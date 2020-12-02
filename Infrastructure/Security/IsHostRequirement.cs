@@ -31,8 +31,8 @@ namespace Infrastructure.Security
             var httpContext = _httpContextAccessor.HttpContext;
             if (context.Resource is AuthorizationFilterContext authContext)
             {
-                var currentUserName = _httpContextAccessor.HttpContext.User?.Claims?
-                .SingleOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+                var currentUserName = httpContext.User?.Claims?
+                    .SingleOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
                 var activityId = Guid.Parse(authContext.RouteData.Values["id"].ToString());
 
                 var activity = _context.Activities.FindAsync(activityId).Result;
