@@ -221,7 +221,7 @@ class ActivityStore {
         } catch (error) {
             runInAction('editing activity error', () => {
                 this.submitting = false;
-            });
+            })
             console.log(error.response);
         }
     };
