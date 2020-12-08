@@ -219,7 +219,9 @@ class ActivityStore {
             });
             history.push(`/activities/${activity.id}`);
         } catch (error) {
-            this.submitting = false;
+            runInAction('editing activity error', () => {
+                this.submitting = false;
+            })
             console.log(error.response);
         }
     };

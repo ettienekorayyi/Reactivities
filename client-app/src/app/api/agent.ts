@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { IUser } from '../../models/user';
 import { IPhoto, IProfile } from '../../models/profile';
 
-axios.defaults.baseURL = 'http://localhost:5000/api';
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 axios.interceptors.request.use((config) => {
     const token = window.localStorage.getItem('jwt');
@@ -50,9 +50,18 @@ const requests = {
         axios
             .get(url)
             .then(responseBody),
-    post: (url: string, body: {}) => axios.post(url, body).then(sleep(1000)).then(responseBody),
-    put: (url: string, body: {}) => axios.put(url, body).then(sleep(1000)).then(responseBody),
-    del: (url: string) => axios.delete(url).then(sleep(1000)).then(responseBody),
+    post: (url: string, body: {}) => 
+        axios
+            .post(url, body)
+            .then(responseBody),
+    put: (url: string, body: {}) => 
+        axios
+            .put(url, body)
+            .then(responseBody),
+    del: (url: string) => 
+        axios
+            .delete(url)
+            .then(responseBody),
     postForm: (url: string, file: Blob) => {
         let formData = new FormData();
         formData.append('File', file);
